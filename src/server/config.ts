@@ -1,4 +1,3 @@
-import "dotenv/config";
 
 const numberFromEnv = (name: string, fallback: number) => {
   const value = Number(process.env[name]);
