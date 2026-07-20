@@ -1,8 +1,8 @@
 import { differenceInCalendarDays, parseISO } from "date-fns";
-import type { ActualPost, ManualReviewDecision, MatchType, PlannedPost, ReportRecord } from "../../shared/types";
-import { config } from "../config";
-import { canonicalizeUrl, extractUrls, normalizeDescription, normalizeForSimilarity } from "./normalize";
-import { describeDifferences, descriptionContainmentSimilarity, descriptionSimilarity } from "./similarity";
+import type { ActualPost, ManualReviewDecision, MatchType, PlannedPost, ReportRecord } from "../../shared/types.js";
+import { config } from "../config.js";
+import { canonicalizeUrl, extractUrls, normalizeDescription, normalizeForSimilarity } from "./normalize.js";
+import { describeDifferences, descriptionContainmentSimilarity, descriptionSimilarity } from "./similarity.js";
 
 interface Candidate {
   planned: PlannedPost;

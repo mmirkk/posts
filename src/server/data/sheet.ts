@@ -1,7 +1,7 @@
 import * as XLSX from "xlsx";
-import type { PlannedPost, SocialNetwork } from "../../shared/types";
-import { config } from "../config";
-import { normalizeDescription } from "../matching/normalize";
+import type { PlannedPost, SocialNetwork } from "../../shared/types.js";
+import { config } from "../config.js";
+import { normalizeDescription } from "../matching/normalize.js";
 
 type SheetRow = Record<string, unknown>;
 

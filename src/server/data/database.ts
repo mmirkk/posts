@@ -1,7 +1,7 @@
 import pg from "pg";
-import type { ActualPost, SocialNetwork } from "../../shared/types";
-import { assertRuntimeConfig, config, OFFICIAL_PROFILE_RULES } from "../config";
-import { normalizeDescription, normalizeProfile } from "../matching/normalize";
+import type { ActualPost, SocialNetwork } from "../../shared/types.js";
+import { assertRuntimeConfig, config, OFFICIAL_PROFILE_RULES } from "../config.js";
+import { normalizeDescription, normalizeProfile } from "../matching/normalize.js";
 
 export const pool = new pg.Pool({ connectionString: config.databaseUrl, max: 5 });
 

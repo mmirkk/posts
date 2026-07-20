@@ -2,9 +2,9 @@ import "dotenv/config";
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { app } from "./app";
-import { config } from "./config";
-import { closeDatabase } from "./data/database";
+import { app } from "./app.js";
+import { config } from "./config.js";
+import { closeDatabase } from "./data/database.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const clientPath = path.resolve(dirname, "../../dist/client");

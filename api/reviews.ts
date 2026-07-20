@@ -1,8 +1,30 @@
-import type { ServerResponse } from "node:http";
-import type { ManualReviewValue } from "../src/shared/types";
-import { errorMessage, readJsonBody, sendJson, type ApiRequest } from "./_http";
+import type { IncomingMessage, ServerResponse } from "node:http";
+import type { ManualReviewValue } from "../src/shared/types.js";
 
 const weekPattern = /^\d{4}-\d{2}-\d{2}$/u;
+type ApiRequest = IncomingMessage & { body?: unknown };
+
+function sendJson(response: ServerResponse, status: number, body: unknown) {
+  response.statusCode = status;
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.end(JSON.stringify(body));
+}
+
+function errorMessage(error: unknown) {
+  return error instanceof Error ? error.message : "Error inesperado";
+}
+
+async function readJsonBody(request: ApiRequest): Promise<unknown> {
+  if (request.body !== undefined) {
+    if (typeof request.body === "string") return JSON.parse(request.body);
+    return request.body;
+  }
+
+  const chunks: Buffer[] = [];
+  for await (const chunk of request) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  const text = Buffer.concat(chunks).toString("utf8");
+  return text ? JSON.parse(text) : {};
+}
 
 interface ReviewBody {
   plannedId?: unknown;
@@ -25,8 +47,8 @@ export default async function handler(request: ApiRequest, response: ServerRespo
 
     const decision = body.decision as ManualReviewValue;
     const week = typeof body.week === "string" ? body.week : undefined;
-    const { saveReviewDecision } = await import("../src/server/reviews");
-    const { buildReport } = await import("../src/server/report");
+    const { saveReviewDecision } = await import("../src/server/reviews.js");
+    const { buildReport } = await import("../src/server/report.js");
     await saveReviewDecision(body.plannedId, body.actualId, decision);
     return sendJson(response, 200, await buildReport({ force: true, weekEnd: week }));
   } catch (error) {

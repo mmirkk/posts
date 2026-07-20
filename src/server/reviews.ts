@@ -1,6 +1,6 @@
-import type { ManualReviewDecision, ManualReviewValue } from "../shared/types";
-import { assertRuntimeConfig } from "./config";
-import { pool } from "./data/database";
+import type { ManualReviewDecision, ManualReviewValue } from "../shared/types.js";
+import { assertRuntimeConfig } from "./config.js";
+import { pool } from "./data/database.js";
 
 export async function loadReviewDecisions(): Promise<ManualReviewDecision[]> {
   assertRuntimeConfig();

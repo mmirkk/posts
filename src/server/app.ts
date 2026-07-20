@@ -1,6 +1,6 @@
 import express from "express";
 import { ZodError, z } from "zod";
-import { config } from "./config";
+import { config } from "./config.js";
 
 const app = express();
 const reportPeriodSchema = z.union([z.literal("all"), z.string().regex(/^\d{4}-\d{2}-\d{2}$/u)]);
@@ -14,7 +14,7 @@ app.get("/api/health", (_request, response) => response.json({
 }));
 app.get("/api/report", async (request, response, next) => {
   try {
-    const { buildReport } = await import("./report");
+    const { buildReport } = await import("./report.js");
     const query = z.object({
       refresh: z.enum(["true", "false"]).optional(),
       week: reportPeriodSchema.optional(),
@@ -26,8 +26,8 @@ app.get("/api/report", async (request, response, next) => {
 });
 app.post("/api/reviews", async (request, response, next) => {
   try {
-    const { buildReport } = await import("./report");
-    const { saveReviewDecision } = await import("./reviews");
+    const { buildReport } = await import("./report.js");
+    const { saveReviewDecision } = await import("./reviews.js");
     const body = z.object({
       plannedId: z.string().min(1),
       actualId: z.string().min(1),

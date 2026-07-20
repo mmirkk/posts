@@ -1,5 +1,5 @@
-import type { DifferenceSummary } from "../../shared/types";
-import { extractEmojis, extractHashtags, extractUrls, normalizeForSimilarity } from "./normalize";
+import type { DifferenceSummary } from "../../shared/types.js";
+import { extractEmojis, extractHashtags, extractUrls, normalizeForSimilarity } from "./normalize.js";
 
 const tokenize = (value: string) => value.match(/[\p{L}\p{N}]+/gu) ?? [];
 
