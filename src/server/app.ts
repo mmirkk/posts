@@ -1,10 +1,6 @@
 import express from "express";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { ZodError, z } from "zod";
 import { config } from "./config";
-import { buildReport } from "./report";
-import { saveReviewDecision } from "./reviews";
 
 const app = express();
 const reportPeriodSchema = z.union([z.literal("all"), z.string().regex(/^\d{4}-\d{2}-\d{2}$/u)]);
@@ -18,6 +14,7 @@ app.get("/api/health", (_request, response) => response.json({
 }));
 app.get("/api/report", async (request, response, next) => {
   try {
+    const { buildReport } = await import("./report");
     const query = z.object({
       refresh: z.enum(["true", "false"]).optional(),
       week: reportPeriodSchema.optional(),
@@ -29,6 +26,8 @@ app.get("/api/report", async (request, response, next) => {
 });
 app.post("/api/reviews", async (request, response, next) => {
   try {
+    const { buildReport } = await import("./report");
+    const { saveReviewDecision } = await import("./reviews");
     const body = z.object({
       plannedId: z.string().min(1),
       actualId: z.string().min(1),
@@ -41,11 +40,6 @@ app.post("/api/reviews", async (request, response, next) => {
     next(error);
   }
 });
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
-const clientPath = path.resolve(dirname, "../../dist/client");
-app.use(express.static(clientPath));
-app.get("/{*splat}", (_request, response, next) => response.sendFile(path.join(clientPath, "index.html"), (error) => error ? next(error) : undefined));
 
 app.use((error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
   console.error(error);

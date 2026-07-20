@@ -1,7 +1,15 @@
 import "dotenv/config";
+import express from "express";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { app } from "./app";
 import { config } from "./config";
 import { closeDatabase } from "./data/database";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const clientPath = path.resolve(dirname, "../../dist/client");
+app.use(express.static(clientPath));
+app.get("/{*splat}", (_request, response, next) => response.sendFile(path.join(clientPath, "index.html"), (error) => error ? next(error) : undefined));
 
 const server = app.listen(config.port, () => console.log(`Informe disponible en http://localhost:${config.port}`));
 
