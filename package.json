@@ -1,0 +1,46 @@
+{
+  "name": "cumplimiento-publicaciones",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"tsx watch src/server/index.ts\" \"vite\"",
+    "dev:server": "tsx watch src/server/index.ts",
+    "dev:client": "vite",
+    "build": "tsc -b && vite build",
+    "start": "tsx src/server/index.ts",
+    "test": "vitest --config vitest.config.ts run",
+    "test:watch": "vitest --config vitest.config.ts",
+    "check": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "clsx": "latest",
+    "date-fns": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "lucide-react": "latest",
+    "papaparse": "latest",
+    "pg": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "recharts": "latest",
+    "xlsx": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@testing-library/react": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/papaparse": "latest",
+    "@types/pg": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "concurrently": "latest",
+    "jsdom": "latest",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}
