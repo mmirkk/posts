@@ -441,8 +441,8 @@ export default function ExecutiveApp() {
   return (
     <div className="exec-shell">
       <header className="exec-topbar">
-        <a className="brand" href="/ejecutivo"><span className="brand__mark"><Sparkles size={18} /></span><div><strong>Ejecución de publicaciones</strong><span>Vista ejecutiva</span></div></a>
-        <nav className="exec-nav" aria-label="Vistas del informe"><a className="exec-nav__active" href="/ejecutivo">Ejecutiva</a><a href="/">Analítica</a></nav>
+        <a className="brand" href="/"><span className="brand__mark"><Sparkles size={18} /></span><div><strong>Ejecución de publicaciones</strong><span>Vista ejecutiva</span></div></a>
+        <nav className="exec-nav" aria-label="Vistas del informe"><a className="exec-nav__active" href="/">Ejecutiva</a><a href="/analitico">Analítica</a></nav>
         <button className="button button--ghost" onClick={() => void loadReport(report.window.isAll ? "all" : report.window.to, true)} disabled={refreshing}><RefreshCw size={16} className={refreshing ? "spin" : ""} /><span>Actualizar</span></button>
       </header>
 

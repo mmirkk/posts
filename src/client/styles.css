@@ -613,11 +613,12 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
 .exec-chart-tooltip em { color: #2f63c8; font-size: 8px; font-style: normal; }
 
 .day-drawer { width: min(760px, 97vw); }
-.day-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.day-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .day-summary > div { display: grid; gap: 5px; padding: 13px; border: 1px solid #dfe5ee; border-radius: 9px; background: #f8fafc; }
 .day-summary span { color: #778297; font-size: 9px; font-weight: 750; text-transform: uppercase; }
 .day-summary strong { color: #26334c; font-size: 22px; }
 .day-summary small { color: #778297; font-size: 8px; }
+.day-summary .day-associated { color: #0f7b4e; font-size: 14px; }
 .day-section { margin-top: 22px; }
 .day-section__title { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 9px; }
 .day-section__title h3 { margin: 0; color: #27344d; font-size: 13px; }
@@ -646,10 +647,10 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
 .day-target--missing { color: #a95366; border-color: #e6cfd5; background: #faf2f4; }
 .day-copy-details { margin-top: 11px; border-top: 1px solid #edf0f5; }
 .day-copy-details--focused { margin: 12px -5px -5px; padding: 0 5px 5px; border: 1px solid #dcc58e; border-radius: 9px; background: #fffdf8; }
-.day-copy-details > summary, .day-actual-details > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 2px 0; color: #59677f; cursor: pointer; font-size: 9px; font-weight: 750; list-style: none; }
-.day-copy-details > summary::-webkit-details-marker, .day-actual-details > summary::-webkit-details-marker { display: none; }
-.day-copy-details[open] > summary svg, .day-actual-details[open] > summary svg { transform: rotate(180deg); }
-.day-copy-details > summary svg, .day-actual-details > summary svg { transition: transform .18s ease; }
+.day-copy-details > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 2px 0; color: #59677f; cursor: pointer; font-size: 9px; font-weight: 750; list-style: none; }
+.day-copy-details > summary::-webkit-details-marker { display: none; }
+.day-copy-details[open] > summary svg { transform: rotate(180deg); }
+.day-copy-details > summary svg { transition: transform .18s ease; }
 .day-copy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 10px; }
 .day-copy-grid > div { min-width: 0; padding: 10px; border: 1px solid #e3e8f0; border-radius: 8px; background: #fafbfc; }
 .day-copy-grid > div > span { color: #7b8699; font-size: 8px; font-weight: 800; letter-spacing: .06em; }
@@ -668,19 +669,19 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
 .review-notice { display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 9px 10px; border: 1px solid; border-radius: 8px; font-size: 9px; font-weight: 700; }
 .review-notice--ok { color: #28705a; border-color: #bdd8cd; background: #f2f8f5; }
 .review-notice--error { color: #9e4c60; border-color: #e2c8cf; background: #faf2f4; }
-.day-actual-details { margin-top: 18px; padding: 0 13px 13px; border: 1px solid #dfe5ee; border-radius: 10px; background: #f8fafc; }
-.day-actual-details > summary { padding: 12px 0; color: #33435c; font-size: 10px; }
+.day-actual-details { margin-top: 18px; padding: 13px; border: 1px solid #dfe5ee; border-radius: 10px; background: #f8fafc; }
+.day-actual-heading { margin: 0 0 12px; padding: 0; color: #33435c; font-size: 10px; font-weight: 750; text-transform: uppercase; letter-spacing: .025em; }
 .day-actual-list article { position: relative; display: grid; grid-template-columns: 68px minmax(145px, .58fr) minmax(0, 1.25fr) auto; align-items: center; gap: 12px; padding: 11px 12px; border: 1px solid #dfe5ee; border-radius: 9px; background: #fff; }
-.day-actual-list article.day-actual-card--associated { border-color: #bcdccd; background: #f1faf6; box-shadow: inset 3px 0 0 #3c9b79; }
-.day-actual-list article.day-actual-card--unplanned { border-color: #ccd8e8; background: #f4f7fc; box-shadow: inset 3px 0 0 #7188ad; }
+.day-actual-list article.day-actual-card--associated { border-color: #a3d4bc; background: #ecf8f2; box-shadow: inset 4px 0 0 #2d8a65; }
+.day-actual-list article.day-actual-card--unplanned { border-color: #bcc8dc; background: #edf1f8; box-shadow: inset 4px 0 0 #5c7094; }
 .day-actual-meta { display: grid; justify-items: start; gap: 3px; }
 .day-actual-list strong { color: #334057; font-size: 10px; }
 .day-actual-list span { color: #7b8699; font-size: 8px; }
 .day-actual-list p { margin: 0; color: #69758a; font-size: 9px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .day-actual-list a { margin: 0; white-space: nowrap; }
 .day-actual-meta .day-actual-status { display: inline-flex; align-items: center; width: max-content; padding: 4px 7px; border-radius: 999px; font-size: 7px; font-weight: 800; letter-spacing: .025em; text-transform: uppercase; }
-.day-actual-meta .day-actual-status--associated { color: #23644e; background: #dcefe7; }
-.day-actual-meta .day-actual-status--unplanned { color: #4e6488; background: #e1e8f3; }
+.day-actual-meta .day-actual-status--associated { color: #1b4f3d; background: #c6e8d7; }
+.day-actual-meta .day-actual-status--unplanned { color: #3d5078; background: #d4ddf0; }
 .day-media-wrap { position: relative; width: 68px; height: 58px; }
 .day-media-preview { position: relative; z-index: 1; width: 68px; height: 58px; overflow: hidden; border: 1px solid #d5dde9; border-radius: 8px; background: #eef2f7; color: #8490a2; cursor: zoom-in; transform-origin: left center; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .day-media-preview:hover { z-index: 12; transform: scale(3.15); border-color: #aebbd0; box-shadow: 0 14px 38px rgba(14,25,47,.28); }
@@ -746,5 +747,5 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
   .day-media-preview:hover { transform: none; box-shadow: none; }
   .day-actual-list article > p, .day-actual-list article > a { grid-column: span 2; }
   .day-actual-list p { white-space: normal; }
-  .day-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .day-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

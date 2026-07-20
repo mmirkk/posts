@@ -332,7 +332,7 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="analytics-view-link" href="/ejecutivo">Vista ejecutiva</a>
+        <a className="analytics-view-link" href="/analitico">Vista analítica</a>
         <div className="brand"><span className="brand__mark"><Sparkles size={18} /></span><div><strong>Ejecución de publicaciones</strong><span>Cuentas oficiales · corte semanal</span></div></div>
         <div className="topbar__meta"><span>Actualizado {format(new Date(report.generatedAt), "dd MMM · HH:mm", { locale: es })}</span><button className="button button--ghost" onClick={() => void loadReport(true)} disabled={refreshing}><RefreshCw size={16} className={refreshing ? "spin" : ""} /> Actualizar</button></div>
       </header>

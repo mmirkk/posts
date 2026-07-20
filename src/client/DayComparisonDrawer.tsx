@@ -150,12 +150,12 @@ export default function DayComparisonDrawer({
     <aside className="drawer day-drawer" onMouseDown={(event) => event.stopPropagation()} aria-label="Comparativa diaria">
       <header className="drawer__header"><div><span className="eyebrow">COMPARATIVA DEL DÍA</span><h2>{format(parseISO(day), "EEEE d 'de' MMMM", { locale: es })}</h2></div><button className="icon-button" onClick={onClose} aria-label="Cerrar"><X size={20} /></button></header>
       <div className="drawer__content">
-        <div className="day-summary"><div><span>Planeados</span><strong>{plannedContents.length}</strong></div><div><span>Posts reales</span><strong>{detail.actual.length}</strong></div><div><span>Posts planeados por red</span><strong>{detail.planned.length}</strong><small>{matchedTargets} asociados</small></div></div>
+        <div className="day-summary"><div><span>Posts reales</span><strong>{detail.actual.length}</strong></div><div><span>Planeados</span><strong>{detail.planned.length}</strong><strong className="day-associated">{matchedTargets} asociados</strong></div></div>
         {decisionNotice && <div className="review-notice review-notice--ok"><Check size={14} />{decisionNotice}</div>}
         {decisionError && <div className="review-notice review-notice--error"><X size={14} />{decisionError}</div>}
         <section className="day-section"><div className="day-section__title"><h3>¿Qué se hizo de lo planificado?</h3><span>{plannedContents.length} planeados · {detail.planned.length} posts por red/cuenta</span></div>{plannedContents.length ? <div className="day-plan-list">{plannedContents.map((content) => <PlannedContentRow content={content} focusRecordId={focusRecordId} onReviewDecision={onReviewDecision ? decide : undefined} reviewingId={reviewingId} key={content.key} />)}</div> : <p className="day-empty">No había publicaciones planeadas para este día.</p>}</section>
-        <details className="day-actual-details">
-          <summary><span>Ver los {detail.actual.length} posts oficiales realizados ese día</span><ChevronDown size={16} /></summary>
+        <section className="day-actual-details">
+          <h3 className="day-actual-heading">{detail.actual.length} posts oficiales realizados ese día</h3>
           {sortedActual.length ? <div className="day-actual-list">{sortedActual.map((record) => {
             const format = recordPublishedFormat(record);
             const associated = Boolean(record.plannedId);
@@ -166,7 +166,7 @@ export default function DayComparisonDrawer({
               {record.postUrl && <a href={record.postUrl} target="_blank" rel="noreferrer"><Link2 size={13} /> Abrir publicación</a>}
             </article>;
           })}</div> : <p className="day-empty">No hay posts oficiales registrados para este día.</p>}
-        </details>
+        </section>
       </div>
     </aside>
   </div>;
