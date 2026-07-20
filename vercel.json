@@ -3,7 +3,7 @@
   "outputDirectory": "dist/client",
   "installCommand": "pnpm install --frozen-lockfile",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/analitico", "destination": "/index.html" },
+    { "source": "/analitico/(.*)", "destination": "/index.html" }
   ]
 }
