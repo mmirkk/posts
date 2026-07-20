@@ -1,12 +1,12 @@
 import { addDays, differenceInCalendarDays, format, parseISO, subDays } from "date-fns";
 import { es } from "date-fns/locale";
-import type { ActualPost, PlannedPost, ReportAnalytics, ReportMetrics, ReportRecord, ReportResponse, SocialNetwork, ThemeNetworkMetric, UpcomingContent } from "../shared/types.js";
-import { config } from "./config.js";
-import { loadActualPosts } from "./data/database.js";
-import { loadPlannedPosts } from "./data/sheet.js";
-import { matchPosts } from "./matching/matcher.js";
-import { canonicalizeUrl, extractUrls } from "./matching/normalize.js";
-import { loadReviewDecisions } from "./reviews.js";
+import type { ActualPost, PlannedPost, ReportAnalytics, ReportMetrics, ReportRecord, ReportResponse, SocialNetwork, ThemeNetworkMetric, UpcomingContent } from "../shared/types";
+import { config } from "./config";
+import { loadActualPosts } from "./data/database";
+import { loadPlannedPosts } from "./data/sheet";
+import { matchPosts } from "./matching/matcher";
+import { canonicalizeUrl, extractUrls } from "./matching/normalize";
+import { loadReviewDecisions } from "./reviews";
 
 const round = (value: number, digits = 1) => Number(value.toFixed(digits));
 const pct = (numerator: number, denominator: number) => denominator ? round(numerator / denominator * 100) : 0;

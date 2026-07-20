@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { ActualPost, PlannedPost } from "../../shared/types.js";
-import { normalizeDescription } from "./normalize.js";
-import { matchPosts } from "./matcher.js";
+import type { ActualPost, PlannedPost } from "../../shared/types";
+import { normalizeDescription } from "./normalize";
+import { matchPosts } from "./matcher";
 
 const plan = (id: string, description: string, date = "2026-06-10"): PlannedPost => ({
   id,

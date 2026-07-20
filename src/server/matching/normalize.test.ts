@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { canonicalizeUrl, normalizeDescription, normalizeForSimilarity } from "./normalize.js";
-import { descriptionContainmentSimilarity, descriptionSimilarity } from "./similarity.js";
+import { canonicalizeUrl, normalizeDescription, normalizeForSimilarity } from "./normalize";
+import { descriptionContainmentSimilarity, descriptionSimilarity } from "./similarity";
 
 describe("normalización de descripciones", () => {
   it("normaliza prefijos, tildes, saltos, espacios y puntuación", () => {

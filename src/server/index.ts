@@ -1,6 +1,6 @@
-import { app } from "./app.js";
-import { config } from "./config.js";
-import { closeDatabase } from "./data/database.js";
+import { app } from "./app";
+import { config } from "./config";
+import { closeDatabase } from "./data/database";
 
 const server = app.listen(config.port, () => console.log(`Informe disponible en http://localhost:${config.port}`));
 

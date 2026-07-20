@@ -1,5 +1,5 @@
-import type { ManualReviewDecision, ManualReviewValue } from "../shared/types.js";
-import { pool } from "./data/database.js";
+import type { ManualReviewDecision, ManualReviewValue } from "../shared/types";
+import { pool } from "./data/database";
 
 export async function loadReviewDecisions(): Promise<ManualReviewDecision[]> {
   const result = await pool.query<{
@@ -35,8 +35,8 @@ export async function saveReviewDecision(plannedId: string, actualId: string, de
   await pool.query(
     `DELETE FROM public.manual_review_decisions
      WHERE planned_id = $1
-       AND (decision = 'approved' OR $3 = 'approved')`,
-    [plannedId, actualId, decision],
+       AND (decision = 'approved' OR $2 = 'approved')`,
+    [plannedId, decision],
   );
 
   if (decision === "approved") {

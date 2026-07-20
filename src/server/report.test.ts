@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { ActualPost, PlannedPost } from "../shared/types.js";
-import { allReportingWindow, availableReportingWeeks, buildUpcomingContent, isStoryPost, reportingWindow, selectOfficialPosts } from "./report.js";
+import type { ActualPost, PlannedPost } from "../shared/types";
+import { allReportingWindow, availableReportingWeeks, buildUpcomingContent, isStoryPost, reportingWindow, selectOfficialPosts } from "./report";
 
 describe("ventana semanal del informe", () => {
   it("para el martes incluye la semana actual con corte al día de consulta", () => {

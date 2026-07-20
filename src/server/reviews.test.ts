@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { ManualReviewDecision } from "../shared/types.js";
-import { mergeReviewDecision } from "./reviews.js";
+import type { ManualReviewDecision } from "../shared/types";
+import { mergeReviewDecision } from "./reviews";
 
 const decision = (plannedId: string, actualId: string, value: "approved" | "rejected"): ManualReviewDecision => ({
   plannedId,

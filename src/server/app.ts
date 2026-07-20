@@ -2,9 +2,9 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ZodError, z } from "zod";
-import { config } from "./config.js";
-import { buildReport } from "./report.js";
-import { saveReviewDecision } from "./reviews.js";
+import { config } from "./config";
+import { buildReport } from "./report";
+import { saveReviewDecision } from "./reviews";
 
 const app = express();
 const reportPeriodSchema = z.union([z.literal("all"), z.string().regex(/^\d{4}-\d{2}-\d{2}$/u)]);
