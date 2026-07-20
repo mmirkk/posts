@@ -26,10 +26,12 @@ export const config = {
   officialProfileIds: listFromEnv("OFFICIAL_PROFILE_IDS", ["757523", "743322", "560926", "566907", "560932", "560927"]),
 };
 
-if (!config.databaseUrl) throw new Error("Falta DATABASE_URL en el archivo .env");
-if (!/^\d{4}-\d{2}-\d{2}$/u.test(config.reportStartDate)) throw new Error("REPORT_START_DATE debe tener formato YYYY-MM-DD");
-if (!/^[a-zA-Z_][\w]*(\.[a-zA-Z_][\w]*)?$/.test(config.databaseTable)) {
-  throw new Error("POSTS_TABLE contiene un nombre no válido");
+export function assertRuntimeConfig() {
+  if (!config.databaseUrl) throw new Error("Falta la variable de entorno DATABASE_URL");
+  if (!/^\d{4}-\d{2}-\d{2}$/u.test(config.reportStartDate)) throw new Error("REPORT_START_DATE debe tener formato YYYY-MM-DD");
+  if (!/^[a-zA-Z_][\w]*(\.[a-zA-Z_][\w]*)?$/.test(config.databaseTable)) {
+    throw new Error("POSTS_TABLE contiene un nombre no válido");
+  }
 }
 
 export const OFFICIAL_PROFILE_RULES: Record<string, RegExp[]> = {

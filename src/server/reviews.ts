@@ -1,7 +1,9 @@
 import type { ManualReviewDecision, ManualReviewValue } from "../shared/types";
+import { assertRuntimeConfig } from "./config";
 import { pool } from "./data/database";
 
 export async function loadReviewDecisions(): Promise<ManualReviewDecision[]> {
+  assertRuntimeConfig();
   const result = await pool.query<{
     planned_id: string;
     actual_id: string;
@@ -32,6 +34,7 @@ export function mergeReviewDecision(current: ManualReviewDecision[], plannedId: 
 }
 
 export async function saveReviewDecision(plannedId: string, actualId: string, decision: ManualReviewValue): Promise<ManualReviewDecision> {
+  assertRuntimeConfig();
   await pool.query(
     `DELETE FROM public.manual_review_decisions
      WHERE planned_id = $1

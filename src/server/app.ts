@@ -11,7 +11,11 @@ const reportPeriodSchema = z.union([z.literal("all"), z.string().regex(/^\d{4}-\
 app.disable("x-powered-by");
 app.use(express.json({ limit: "1mb" }));
 
-app.get("/api/health", (_request, response) => response.json({ ok: true, service: "cumplimiento-publicaciones" }));
+app.get("/api/health", (_request, response) => response.json({
+  ok: true,
+  service: "cumplimiento-publicaciones",
+  configuration: { databaseUrl: Boolean(config.databaseUrl), sheetId: Boolean(config.sheetId) },
+}));
 app.get("/api/report", async (request, response, next) => {
   try {
     const query = z.object({

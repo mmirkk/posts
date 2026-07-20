@@ -39,6 +39,7 @@ import {
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import type { ComplianceStatus, MatchType, ReportMetrics, ReportRecord, ReportResponse } from "../shared/types";
+import { fetchJson } from "./api";
 import { summarizePlannedContent } from "./contentSummary";
 import { buildDailyTimeline } from "./dailyTimeline";
 import UpcomingSection from "./UpcomingSection";
@@ -233,9 +234,7 @@ function App() {
     force ? setRefreshing(true) : setLoading(true);
     setError("");
     try {
-      const response = await fetch(`/api/report${force ? "?refresh=true" : ""}`);
-      const body = await response.json();
-      if (!response.ok) throw new Error(body.error || "No se pudo cargar el informe");
+      const body = await fetchJson<ReportResponse>(`/api/report${force ? "?refresh=true" : ""}`);
       setReport(body);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "No se pudo cargar el informe");

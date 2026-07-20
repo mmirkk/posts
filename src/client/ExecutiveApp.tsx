@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { ManualReviewValue, ReportRecord, ReportResponse } from "../shared/types";
+import { fetchJson } from "./api";
 import { summarizePlannedContent } from "./contentSummary";
 import { buildDailyTimeline } from "./dailyTimeline";
 import DayComparisonDrawer from "./DayComparisonDrawer";
@@ -371,9 +372,7 @@ export default function ExecutiveApp() {
       const params = new URLSearchParams();
       if (week) params.set("week", week);
       if (force) params.set("refresh", "true");
-      const response = await fetch(`/api/report${params.size ? `?${params}` : ""}`);
-      const body = await response.json();
-      if (!response.ok) throw new Error(body.error || "No se pudo cargar la semana");
+      const body = await fetchJson<ReportResponse>(`/api/report${params.size ? `?${params}` : ""}`);
       setReport(body);
       setActiveKpi(null);
     } catch (loadError) {
@@ -388,13 +387,11 @@ export default function ExecutiveApp() {
 
   const decideReview = async (_record: ReportRecord, actualId: string, decision: ManualReviewValue) => {
     if (!_record.plannedId) throw new Error("La publicación planeada no tiene identificador.");
-    const response = await fetch("/api/reviews", {
+    const body = await fetchJson<ReportResponse>("/api/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ plannedId: _record.plannedId, actualId, decision, week: report?.window.isAll ? "all" : report?.window.to }),
     });
-    const body = await response.json();
-    if (!response.ok) throw new Error(body.error || "No se pudo guardar la revisión.");
     setReport(body);
   };
 

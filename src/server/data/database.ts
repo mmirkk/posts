@@ -1,6 +1,6 @@
 import pg from "pg";
 import type { ActualPost, SocialNetwork } from "../../shared/types";
-import { config, OFFICIAL_PROFILE_RULES } from "../config";
+import { assertRuntimeConfig, config, OFFICIAL_PROFILE_RULES } from "../config";
 import { normalizeDescription, normalizeProfile } from "../matching/normalize";
 
 export const pool = new pg.Pool({ connectionString: config.databaseUrl, max: 5 });
@@ -46,6 +46,7 @@ export interface DatabaseLoadResult {
 }
 
 export async function loadActualPosts(dateFrom: string, dateTo: string): Promise<DatabaseLoadResult> {
+  assertRuntimeConfig();
   const query = `
     SELECT
       id::text,

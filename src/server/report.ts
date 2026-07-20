@@ -1,7 +1,7 @@
 import { addDays, differenceInCalendarDays, format, parseISO, subDays } from "date-fns";
 import { es } from "date-fns/locale";
 import type { ActualPost, PlannedPost, ReportAnalytics, ReportMetrics, ReportRecord, ReportResponse, SocialNetwork, ThemeNetworkMetric, UpcomingContent } from "../shared/types";
-import { config } from "./config";
+import { assertRuntimeConfig, config } from "./config";
 import { loadActualPosts } from "./data/database";
 import { loadPlannedPosts } from "./data/sheet";
 import { matchPosts } from "./matching/matcher";
@@ -296,6 +296,7 @@ function buildAnalytics(planned: PlannedPost[], actual: ActualPost[], records: R
 }
 
 export async function buildReport(input: boolean | { force?: boolean; weekEnd?: string } = false): Promise<ReportResponse> {
+  assertRuntimeConfig();
   const options = typeof input === "boolean" ? { force: input, weekEnd: undefined } : input;
   const window = options.weekEnd === "all" ? allReportingWindow(new Date()) : reportingWindow(new Date(), options.weekEnd);
   const cacheKey = window.isAll ? `all:${window.dataThrough}` : window.to;
