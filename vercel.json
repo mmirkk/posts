@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run build",
+  "buildCommand": "tsc -p tsconfig.app.json --noEmit && vite build",
   "outputDirectory": "dist/client",
   "installCommand": "pnpm install --frozen-lockfile",
   "rewrites": [
