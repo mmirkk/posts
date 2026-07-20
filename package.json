@@ -7,7 +7,7 @@
     "dev": "concurrently -k \"tsx watch src/server/index.ts\" \"vite\"",
     "dev:server": "tsx watch src/server/index.ts",
     "dev:client": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.app.json --noEmit && vite build",
     "start": "tsx src/server/index.ts",
     "test": "vitest --config vitest.config.ts run",
     "test:watch": "vitest --config vitest.config.ts",
