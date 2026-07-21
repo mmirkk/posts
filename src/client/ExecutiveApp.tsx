@@ -6,7 +6,6 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
-  ChevronRight,
   ExternalLink,
   LoaderCircle,
   RefreshCw,
@@ -17,7 +16,7 @@ import {
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { ManualReviewValue, ReportRecord, ReportResponse } from "../shared/types";
-import { fetchJson } from "./api";
+import { fetchJson } from "./apiClient";
 import { summarizePlannedContent } from "./contentSummary";
 import { buildDailyTimeline } from "./dailyTimeline";
 import DayComparisonDrawer from "./DayComparisonDrawer";
@@ -58,6 +57,10 @@ function shortDescription(value: string) {
 
 function formatMetric(value: number) {
   return value.toLocaleString("es-AR");
+}
+
+function formatPercentage(value: number) {
+  return `${value.toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`;
 }
 
 type ExecutiveEngagementRow = ReportResponse["analytics"]["engagementByNetwork"][number] | ReportResponse["analytics"]["engagementByTheme"][number];
@@ -424,6 +427,8 @@ export default function ExecutiveApp() {
     return [...records.values()].sort((a, b) => `${a.actualDate ?? ""}|${a.network}|${a.account}|${a.actualDescription}`.localeCompare(`${b.actualDate ?? ""}|${b.network}|${b.account}|${b.actualDescription}`, "es"));
   }, [report]);
   const realizedFromPlan = Math.max(0, (report?.metrics.actual ?? 0) - (report?.metrics.unplanned ?? 0));
+  const planCompliancePct = summary.plannedTargets > 0 ? summary.matchedTargets / summary.plannedTargets * 100 : 0;
+  const planVolumePct = summary.plannedTargets > 0 ? (report?.metrics.actual ?? 0) / summary.plannedTargets * 100 : 0;
 
   useEffect(() => {
     if (!activeKpi) return;
@@ -434,6 +439,13 @@ export default function ExecutiveApp() {
 
   if (loading) return <main className="state-screen"><div className="loader-orbit"><LoaderCircle size={28} /></div><h1>Preparando la vista ejecutiva</h1><p>Estamos revisando qué publicaciones planeadas se realizaron.</p></main>;
   if (!report) return <main className="state-screen"><AlertTriangle size={36} /><h1>No se pudo cargar el informe</h1><p>{error}</p><button className="button button--primary" onClick={() => void loadReport()}>Reintentar</button></main>;
+
+  const selectedWeek = report.availableWeeks.find((week) => week.value === report.window.to);
+  const selectedWeekLabel = report.window.isAll
+    ? "TODAS LAS SEMANAS"
+    : selectedWeek
+      ? `Semana del ${selectedWeek.label}${selectedWeek.isCurrent ? " · En curso" : ""}`
+      : report.window.label;
 
   return (
     <div className="exec-shell">
@@ -446,7 +458,7 @@ export default function ExecutiveApp() {
       <main className="exec-main">
         <section className="exec-heading">
           <div><span className="exec-official-heading">{report.window.isAll ? "RESUMEN ACUMULADO" : "RESUMEN SEMANAL"} · CUENTAS <strong>OFICIALES</strong></span><h1>Plan vs. Publicado</h1><p>Una lectura simple de los posts planeados y su ejecución en cada red.</p></div>
-          <label className="exec-week"><span>Semana</span><div><CalendarDays size={18} /><select value={report.window.isAll ? "all" : report.window.to} onChange={(event) => void loadReport(event.target.value)} disabled={refreshing}><option value="all">TODAS LAS SEMANAS</option>{report.availableWeeks.map((week) => <option value={week.value} key={week.value}>Semana del {week.label}{week.isCurrent ? " · En curso" : ""}</option>)}</select><ChevronDown size={16} /></div>{report.window.isAll ? <small>Todos los datos disponibles · {report.window.label}</small> : report.window.isCurrent && <small>Datos al {format(parseISO(report.window.dataThrough), "d MMM", { locale: es })} · lo futuro no penaliza</small>}</label>
+          <label className="exec-week"><span>Semana</span><div><CalendarDays size={18} /><span className="exec-week__value">{selectedWeekLabel}</span><select aria-label="Seleccionar semana" value={report.window.isAll ? "all" : report.window.to} onChange={(event) => void loadReport(event.target.value)} disabled={refreshing}><option value="all">TODAS LAS SEMANAS</option>{report.availableWeeks.map((week) => <option value={week.value} key={week.value}>Semana del {week.label}{week.isCurrent ? " · En curso" : ""}</option>)}</select><ChevronDown size={16} /></div>{report.window.isAll ? <small>Todos los datos disponibles · {report.window.label}</small> : report.window.isCurrent && <small>Datos al {format(parseISO(report.window.dataThrough), "d MMM", { locale: es })} · lo futuro no penaliza</small>}</label>
         </section>
 
         {error && <div className="exec-alert"><AlertTriangle size={17} /><span>{error}</span></div>}
@@ -454,19 +466,55 @@ export default function ExecutiveApp() {
         <section className="exec-numbered-section exec-numbered-section--primary" aria-labelledby="exec-section-01">
           <header className="exec-numbered-section__header"><span>01</span><div><span className="eyebrow">{report.window.isAll ? "CUMPLIMIENTO ACUMULADO" : "CUMPLIMIENTO SEMANAL"}</span><h2 id="exec-section-01">Planificación y ejecución</h2><p>Qué se planificó, qué se publicó y qué quedó fuera del plan.</p></div></header>
 
-          <section className="exec-summary" aria-label="Resumen de cumplimiento">
-          <div className="exec-summary__kpi exec-summary__actual"><button type="button" className="exec-kpi-trigger" onClick={() => setActiveKpi("actual")} aria-haspopup="dialog"><span>Total publicados</span><strong>{report.metrics.actual}</strong><small>Todos los posts oficiales, dentro o fuera del plan</small><em>Ver detalle</em></button></div>
-          <div className="exec-summary__kpi"><button type="button" className="exec-kpi-trigger" onClick={() => setActiveKpi("planned")} aria-haspopup="dialog"><span>Posts planificados</span><strong>{summary.plannedTargets}</strong><small>Destinos previstos por red y cuenta</small><em>Ver detalle</em></button></div>
-          <div className="exec-summary__kpi exec-summary__done"><button type="button" className="exec-kpi-trigger" onClick={() => setActiveKpi("published")} aria-haspopup="dialog"><span>Publicados del plan</span><strong>{summary.matchedTargets}</strong><small>Destinos con una publicación asociada</small><em>Ver detalle</em></button></div>
-          <div className="exec-summary__kpi exec-summary__missing"><button type="button" className="exec-kpi-trigger" onClick={() => setActiveKpi("unpublished")} aria-haspopup="dialog"><span>Sin publicar del plan</span><strong>{unpublishedTargets}</strong><small>Destinos sin una publicación asociada</small><em>Ver detalle</em></button></div>
+          <section className="exec-plan-board" aria-label="Resumen de cumplimiento">
+            <article className="exec-plan-card">
+              <button type="button" className="exec-plan-card__main" onClick={() => setActiveKpi("planned")} aria-haspopup="dialog">
+                <span>Posts planificados</span>
+                <strong>{summary.plannedTargets}</strong>
+                <small>Destinos previstos por red y cuenta</small>
+                <em>Ver detalle</em>
+              </button>
+              <div className="exec-plan-card__breakdown">
+                <button type="button" className="exec-plan-stat exec-plan-stat--done" onClick={() => setActiveKpi("published")} aria-haspopup="dialog">
+                  <span>Publicados del plan</span><strong>{summary.matchedTargets}</strong><small>Con publicación asociada</small><em>Ver detalle</em>
+                </button>
+                <button type="button" className="exec-plan-stat exec-plan-stat--missing" onClick={() => setActiveKpi("unpublished")} aria-haspopup="dialog">
+                  <span>Sin publicar del plan</span><strong>{unpublishedTargets}</strong><small>Sin publicación asociada</small><em>Ver detalle</em>
+                </button>
+              </div>
+            </article>
+
+            <article className="exec-plan-card">
+              <button type="button" className="exec-plan-card__main exec-plan-card__main--actual" onClick={() => setActiveKpi("actual")} aria-haspopup="dialog">
+                <span>Total publicados</span>
+                <strong>{report.metrics.actual}</strong>
+                <small>Todos los posts oficiales, dentro o fuera del plan</small>
+                <em>Ver detalle</em>
+              </button>
+              <div className="exec-plan-card__breakdown">
+                <button type="button" className="exec-plan-stat exec-plan-stat--done" onClick={() => setActiveKpi("published")} aria-haspopup="dialog">
+                  <span>Publicados del plan</span><strong>{summary.matchedTargets}</strong><small>Incluidos en la planificación</small><em>Ver detalle</em>
+                </button>
+                <button type="button" className="exec-plan-stat exec-plan-stat--unplanned" onClick={() => setActiveKpi("unplanned")} aria-haspopup="dialog">
+                  <span className="exec-plan-stat__icon"><Unlink size={15} /></span>
+                  <span>Publicados fuera del plan</span><strong>{unplannedRows.length}</strong><small>Sin planificación asociada</small><em>Ver detalle</em>
+                </button>
+              </div>
+            </article>
           </section>
 
-          <button type="button" className="exec-unplanned-access" onClick={() => setActiveKpi("unplanned")} aria-haspopup="dialog">
-            <span className="exec-unplanned-access__icon"><Unlink size={17} /></span>
-            <span className="exec-unplanned-access__copy"><strong>Publicados fuera del plan</strong><small>Posts reales de la semana que no coinciden con ninguna planificación.</small></span>
-            <b>{unplannedRows.length}</b>
-            <ChevronRight size={17} />
-          </button>
+          <section className="exec-plan-ratios" aria-label="Indicadores de cumplimiento del plan">
+            <article>
+              <div><span>% del plan cumplido</span><small>Publicados del plan / planificados</small></div>
+              <strong>{formatPercentage(planCompliancePct)}</strong>
+              <b>{summary.matchedTargets}/{summary.plannedTargets}</b>
+            </article>
+            <article>
+              <div><span>Volumen del plan cumplido</span><small>Total publicados / planificados</small></div>
+              <strong>{formatPercentage(planVolumePct)}</strong>
+              <b>{report.metrics.actual}/{summary.plannedTargets}</b>
+            </article>
+          </section>
 
           <section className="exec-chart-card">
             <header><div><span className="eyebrow">COMPARATIVA DIARIA</span><h2>Posts programados frente a realizados</h2><p>La barra de realizados separa lo publicado del plan y lo publicado fuera del plan. {report.window.isAll ? `Datos disponibles del ${report.window.label}.` : report.window.isCurrent ? `Datos hasta el ${format(parseISO(report.window.dataThrough), "d 'de' MMMM", { locale: es })}.` : "Semana completa."} Hacé clic en un día para ver el detalle.</p></div><div className="exec-chart-totals"><span><i className="is-planned" />Programados <strong>{summary.plannedTargets}</strong></span><span><i className="is-realized-planned" />Del plan <strong>{realizedFromPlan}</strong></span><span><i className="is-realized-unplanned" />Fuera del plan <strong>{report.metrics.unplanned}</strong></span></div></header>
