@@ -316,7 +316,7 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
 .exec-plan-stat--done > strong { color: #2f765c; }
 .exec-plan-stat--missing > strong { color: #bf4b69; }
 .exec-plan-stat--unplanned { padding-left: 45px; }
-.exec-plan-stat--unplanned > strong { color: #45658f; }
+.exec-plan-stat--unplanned > strong { color: #d28a2e; }
 .exec-plan-stat__icon { position: absolute; top: 50%; left: 13px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 7px; background: #e9eff8; color: #4e6d9c; transform: translateY(-50%); }
 .exec-plan-ratios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
 .exec-plan-ratios article { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 14px; padding: 12px 15px; border: 1px solid #d8e1ed; border-radius: 11px; background: #f9fbfe; box-shadow: 0 3px 12px rgba(25,40,67,.025); }
@@ -762,4 +762,56 @@ td.description-column span { color: #7a8497; white-space: nowrap; overflow: hidd
   .day-actual-list article > p, .day-actual-list article > a { grid-column: span 2; }
   .day-actual-list p { white-space: normal; }
   .day-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Escala tipográfica optimizada para lectura en presentaciones. */
+.exec-shell .exec-topbar .brand strong { font-size: 12px; }
+.exec-shell .exec-topbar .brand span:not(.brand__mark) { font-size: 9px; }
+.exec-shell .exec-nav a, .exec-shell .exec-topbar > .button { font-size: 10px; }
+.exec-shell .exec-official-heading { font-size: 10px; }
+.exec-shell .exec-heading p { font-size: 15px; line-height: 1.45; }
+.exec-shell .exec-week > span { font-size: 11px; }
+.exec-shell .exec-week__value { font-size: 14px; }
+.exec-shell .exec-week > small { font-size: 10px; }
+.exec-shell .eyebrow { font-size: 10px; }
+.exec-shell .exec-numbered-section__header h2 { font-size: 22px; }
+.exec-shell .exec-numbered-section__header p { font-size: 11px; line-height: 1.45; }
+.exec-shell .exec-plan-card__main { min-height: 164px; }
+.exec-shell .exec-plan-card__main > span,
+.exec-shell .exec-plan-stat > span:not(.exec-plan-stat__icon) { font-size: 10px; }
+.exec-shell .exec-plan-card__main > strong { font-size: 38px; }
+.exec-shell .exec-plan-card__main > small { font-size: 11px; }
+.exec-shell .exec-plan-stat > strong { font-size: 28px; }
+.exec-shell .exec-plan-stat > small { font-size: 10px; }
+.exec-shell .exec-plan-stat > em { font-size: 9px; }
+.exec-shell .exec-plan-ratios span { font-size: 12px; }
+.exec-shell .exec-plan-ratios small { font-size: 9px; }
+.exec-shell .exec-plan-ratios strong { font-size: 22px; }
+.exec-shell .exec-plan-ratios b { font-size: 10px; }
+.exec-shell .exec-performance-table { font-size: 10px; }
+.exec-shell .exec-performance-table th { font-size: 9px; }
+.exec-shell .exec-network-label { font-size: 9px; }
+.exec-shell .exec-theme-label { font-size: 10px; }
+.exec-shell .exec-engagement-value { font-size: 11px; }
+.exec-shell .exec-top-post > span { font-size: 9px; }
+.exec-shell .exec-top-post > small { font-size: 8px; }
+.exec-shell .exec-chart-card h2 { font-size: 20px; }
+.exec-shell .exec-chart-card header p { font-size: 11px; line-height: 1.45; }
+.exec-shell .exec-chart-totals > span { font-size: 10px; }
+.exec-shell .exec-chart-totals strong { font-size: 13px; }
+.exec-shell .exec-impact-strip > div > span { font-size: 10px; }
+.exec-shell .exec-impact-strip > div > strong { font-size: 22px; }
+.exec-shell .exec-impact-strip .insight-strip__intro > strong { font-size: 15px !important; }
+.exec-shell .exec-impact-strip .insight-strip__intro small { font-size: 10px; }
+.exec-shell .upcoming-header h2 { font-size: 19px; }
+.exec-shell .upcoming-header p, .exec-shell .upcoming-header__count span { font-size: 10px; }
+.exec-shell .upcoming-card h3 { font-size: 12px; }
+.exec-shell .upcoming-card p { font-size: 9px; }
+.exec-shell .exec-kpi-modal__header p { font-size: 12px; }
+
+@media (max-width: 700px) {
+  .exec-shell .exec-numbered-section__header h2 { font-size: 18px; }
+  .exec-shell .exec-plan-card__main { min-height: 144px; }
+  .exec-shell .exec-plan-card__main > strong { font-size: 36px; }
+  .exec-shell .exec-plan-ratios span { font-size: 11px; }
 }
